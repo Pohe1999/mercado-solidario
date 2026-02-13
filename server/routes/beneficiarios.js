@@ -9,6 +9,7 @@ router.post('/', async (req, res) => {
     smSector,
     smSeccion,
     smFraccion,
+    nombreCompleto,
     postalCode,
     state,
     city,
@@ -22,6 +23,7 @@ router.post('/', async (req, res) => {
     !smSector ||
     !smSeccion ||
     !smFraccion ||
+    !nombreCompleto ||
     !postalCode ||
     !state ||
     !city ||
@@ -46,6 +48,7 @@ router.post('/', async (req, res) => {
       smSector,
       smSeccion,
       smFraccion,
+      nombreCompleto,
       postalCode,
       state,
       city,
