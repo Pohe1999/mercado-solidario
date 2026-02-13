@@ -6,6 +6,7 @@ const beneficiarioSchema = new mongoose.Schema(
     smSector: { type: String, required: true, trim: true },
     smSeccion: { type: String, required: true, trim: true },
     smFraccion: { type: String, required: true, trim: true },
+    nombreCompleto: { type: String, required: true, trim: true, uppercase: true },
     postalCode: { type: String, required: true, trim: true },
     state: { type: String, required: true, trim: true },
     city: { type: String, required: true, trim: true },

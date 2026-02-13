@@ -21,6 +21,7 @@ function App() {
   } = useForm({
     defaultValues: {
       smName: '',
+      nombreCompleto: '',
       postalCode: '',
       colonia: '',
       address: '',
@@ -121,6 +122,7 @@ function App() {
         smSector: String(selectedSm?.sector ?? ''),
         smSeccion: String(selectedSm?.seccion ?? ''),
         smFraccion: String(selectedSm?.fraccion ?? ''),
+        nombreCompleto: formData.nombreCompleto.trim().toUpperCase(),
         postalCode: formData.postalCode,
         state: locationData?.places?.[0]?.state ?? '',
         city: locationData?.places?.[0]?.['place name'] ?? '',
@@ -301,6 +303,30 @@ function App() {
           </div>
 
           <div className="mt-5 grid gap-4 sm:gap-5 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium text-graphite-700">Nombre completo</label>
+              <input
+                {...register('nombreCompleto', {
+                  required: 'El nombre completo es obligatorio',
+                  pattern: {
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
+                    message: 'Solo se permiten letras',
+                  },
+                  minLength: {
+                    value: 3,
+                    message: 'Ingresa el nombre completo',
+                  },
+                })}
+                placeholder="Nombre Apellido Paterno Apellido Materno"
+                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+              />
+              {errors.nombreCompleto && (
+                <p className="mt-1 text-xs font-medium text-[#B42318]">
+                  {errors.nombreCompleto.message}
+                </p>
+              )}
+            </div>
+
             <div>
               <label className="text-sm font-medium text-graphite-700">Código postal</label>
               <input
