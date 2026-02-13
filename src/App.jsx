@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 function App() {
+  const apiBaseUrl = import.meta.env.VITE_API_URL || ''
   const [smOptions, setSmOptions] = useState([])
   const [smQuery, setSmQuery] = useState('')
   const [selectedSm, setSelectedSm] = useState(null)
@@ -56,7 +57,7 @@ function App() {
 
     const fetchSm = async () => {
       try {
-        const response = await fetch('/api/sm')
+        const response = await fetch(`${apiBaseUrl}/api/sm`)
         if (!response.ok) throw new Error('Error al cargar SM')
         const data = await response.json()
         if (!isActive) return
@@ -128,7 +129,7 @@ function App() {
         phone: formData.phone,
       }
 
-      const response = await fetch('/api/beneficiarios', {
+      const response = await fetch(`${apiBaseUrl}/api/beneficiarios`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
