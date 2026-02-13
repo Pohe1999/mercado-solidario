@@ -98,23 +98,23 @@ function App() {
     const fetchPostal = async () => {
       setCpStatus('loading')
       try {
-        const copomexToken = import.meta.env.VITE_COPOMEX_TOKEN || 'pruebas'
-        const response = await fetch(`https://api.copomex.com/query/info_cp/${postalCode}?token=${copomexToken}`)
+        const response = await fetch(`https://api-sepomex.hckdrk.mx/query/get_cp_datos?codigo_postal=${postalCode}`)
         if (!response.ok) throw new Error('CP no encontrado')
         const data = await response.json()
         
         if (!isActive) return
         
-        // Mapear respuesta de Copomex a estructura compatible
-        if (data.error || !data.response?.cp) {
+        // Validar respuesta
+        if (!data || data.error || !data.estado) {
           throw new Error('CP no encontrado')
         }
         
-        const colonias = data.response.asentamiento || []
+        // Mapear respuesta a estructura compatible
+        const colonias = data.asentamiento || []
         const mappedData = {
           places: [{
-            state: data.response.estado || '',
-            'place name': data.response.municipio || ''
+            state: data.estado || '',
+            'place name': data.municipio || ''
           }],
           _colonias: Array.isArray(colonias) ? colonias : [colonias]
         }
