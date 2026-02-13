@@ -98,30 +98,32 @@ function App() {
     const fetchPostal = async () => {
       setCpStatus('loading')
       try {
-        const response = await fetch(`https://api-sepomex.hckdrk.mx/query/get_cp_datos?codigo_postal=${postalCode}`)
+        const response = await fetch(`https://api.tau.com.mx/dipomex/v1/codigo_postal/${postalCode}`)
         if (!response.ok) throw new Error('CP no encontrado')
         const data = await response.json()
         
         if (!isActive) return
         
         // Validar respuesta
-        if (!data || data.error || !data.estado) {
+        if (!data.codigo_postal || data.codigo_postal.length === 0) {
           throw new Error('CP no encontrado')
         }
         
-        // Mapear respuesta a estructura compatible
-        const colonias = data.asentamiento || []
+        const firstResult = data.codigo_postal[0]
+        // Obtener colonias únicas
+        const colonias = [...new Set(data.codigo_postal.map(item => item.asentamiento))]
+        
         const mappedData = {
           places: [{
-            state: data.estado || '',
-            'place name': data.municipio || ''
+            state: firstResult.estado || '',
+            'place name': firstResult.municipio || ''
           }],
-          _colonias: Array.isArray(colonias) ? colonias : [colonias]
+          _colonias: colonias
         }
         
         setLocationData(mappedData)
         setCpStatus('success')
-        const firstColonia = mappedData._colonias[0] || ''
+        const firstColonia = colonias[0] || ''
         setColonia(firstColonia)
         setValue('colonia', firstColonia)
       } catch (error) {
