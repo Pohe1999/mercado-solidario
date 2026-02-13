@@ -37,9 +37,17 @@ function App() {
   const isAddressValid = addressValue?.trim().length >= 8
 
   const colonies = useMemo(() => {
-    if (!locationData?.places?.length) return []
-    const unique = new Set(locationData.places.map((place) => place['place name']))
-    return Array.from(unique)
+    if (!locationData) return []
+    // Copomex devuelve colonias en locationData._colonias si existe
+    if (locationData._colonias && Array.isArray(locationData._colonias)) {
+      return locationData._colonias
+    }
+    // Fallback para estructura anterior
+    if (locationData.places?.length) {
+      const unique = new Set(locationData.places.map((place) => place['place name']))
+      return Array.from(unique)
+    }
+    return []
   }, [locationData])
 
   const filteredSmOptions = useMemo(() => {
@@ -90,13 +98,30 @@ function App() {
     const fetchPostal = async () => {
       setCpStatus('loading')
       try {
-        const response = await fetch(`https://api.zippopotam.us/mx/${postalCode}`)
+        const copomexToken = import.meta.env.VITE_COPOMEX_TOKEN || 'pruebas'
+        const response = await fetch(`https://api.copomex.com/query/info_cp/${postalCode}?token=${copomexToken}`)
         if (!response.ok) throw new Error('CP no encontrado')
         const data = await response.json()
+        
         if (!isActive) return
-        setLocationData(data)
+        
+        // Mapear respuesta de Copomex a estructura compatible
+        if (data.error || !data.response?.cp) {
+          throw new Error('CP no encontrado')
+        }
+        
+        const colonias = data.response.asentamiento || []
+        const mappedData = {
+          places: [{
+            state: data.response.estado || '',
+            'place name': data.response.municipio || ''
+          }],
+          _colonias: Array.isArray(colonias) ? colonias : [colonias]
+        }
+        
+        setLocationData(mappedData)
         setCpStatus('success')
-        const firstColonia = data?.places?.[0]?.['place name'] ?? ''
+        const firstColonia = mappedData._colonias[0] || ''
         setColonia(firstColonia)
         setValue('colonia', firstColonia)
       } catch (error) {
