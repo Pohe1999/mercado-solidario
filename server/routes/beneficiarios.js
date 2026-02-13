@@ -9,10 +9,11 @@ router.post('/', async (req, res) => {
     smSector,
     smSeccion,
     smFraccion,
-    nombreCompleto,
+    nombre,
+    apellidoPaterno,
+    apellidoMaterno,
     postalCode,
-    state,
-    city,
+    municipio,
     colonia,
     address,
     phone,
@@ -23,10 +24,11 @@ router.post('/', async (req, res) => {
     !smSector ||
     !smSeccion ||
     !smFraccion ||
-    !nombreCompleto ||
+    !nombre ||
+    !apellidoPaterno ||
+    !apellidoMaterno ||
     !postalCode ||
-    !state ||
-    !city ||
+    !municipio ||
     !colonia ||
     !address ||
     !phone
@@ -48,10 +50,11 @@ router.post('/', async (req, res) => {
       smSector,
       smSeccion,
       smFraccion,
-      nombreCompleto,
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
       postalCode,
-      state,
-      city,
+      municipio,
       colonia,
       address,
       phone,

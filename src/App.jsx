@@ -22,7 +22,9 @@ function App() {
   } = useForm({
     defaultValues: {
       smName: '',
-      nombreCompleto: '',
+      nombre: '',
+      apellidoPaterno: '',
+      apellidoMaterno: '',
       postalCode: '',
       colonia: '',
       address: '',
@@ -151,10 +153,11 @@ function App() {
         smSector: String(selectedSm?.sector ?? ''),
         smSeccion: String(selectedSm?.seccion ?? ''),
         smFraccion: String(selectedSm?.fraccion ?? ''),
-        nombreCompleto: formData.nombreCompleto.trim().toUpperCase(),
+        nombre: formData.nombre.trim().toUpperCase(),
+        apellidoPaterno: formData.apellidoPaterno.trim().toUpperCase(),
+        apellidoMaterno: formData.apellidoMaterno.trim().toUpperCase(),
         postalCode: formData.postalCode,
-        state: locationData?.places?.[0]?.state ?? '',
-        city: locationData?.places?.[0]?.['place name'] ?? '',
+        municipio: locationData?.places?.[0]?.['place name'] ?? '',
         colonia: formData.colonia,
         address: formData.address,
         phone: formData.phone,
@@ -332,26 +335,74 @@ function App() {
           </div>
 
           <div className="mt-5 grid gap-4 sm:gap-5 md:grid-cols-2">
-            <div className="md:col-span-2">
-              <label className="text-sm font-medium text-graphite-700">Nombre completo</label>
+            <div>
+              <label className="text-sm font-medium text-graphite-700">Nombre(s)</label>
               <input
-                {...register('nombreCompleto', {
-                  required: 'El nombre completo es obligatorio',
+                {...register('nombre', {
+                  required: 'El nombre es obligatorio',
                   pattern: {
                     value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
                     message: 'Solo se permiten letras',
                   },
                   minLength: {
-                    value: 3,
-                    message: 'Ingresa el nombre completo',
+                    value: 2,
+                    message: 'Ingresa al menos 2 caracteres',
                   },
                 })}
-                placeholder="Nombre Apellido Paterno Apellido Materno"
+                placeholder="Nombre(s)"
                 className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
               />
-              {errors.nombreCompleto && (
+              {errors.nombre && (
                 <p className="mt-1 text-xs font-medium text-[#B42318]">
-                  {errors.nombreCompleto.message}
+                  {errors.nombre.message}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-graphite-700">Apellido Paterno</label>
+              <input
+                {...register('apellidoPaterno', {
+                  required: 'El apellido paterno es obligatorio',
+                  pattern: {
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
+                    message: 'Solo se permiten letras',
+                  },
+                  minLength: {
+                    value: 2,
+                    message: 'Ingresa al menos 2 caracteres',
+                  },
+                })}
+                placeholder="Apellido Paterno"
+                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+              />
+              {errors.apellidoPaterno && (
+                <p className="mt-1 text-xs font-medium text-[#B42318]">
+                  {errors.apellidoPaterno.message}
+                </p>
+              )}
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="text-sm font-medium text-graphite-700">Apellido Materno</label>
+              <input
+                {...register('apellidoMaterno', {
+                  required: 'El apellido materno es obligatorio',
+                  pattern: {
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
+                    message: 'Solo se permiten letras',
+                  },
+                  minLength: {
+                    value: 2,
+                    message: 'Ingresa al menos 2 caracteres',
+                  },
+                })}
+                placeholder="Apellido Materno"
+                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+              />
+              {errors.apellidoMaterno && (
+                <p className="mt-1 text-xs font-medium text-[#B42318]">
+                  {errors.apellidoMaterno.message}
                 </p>
               )}
             </div>
@@ -386,16 +437,6 @@ function App() {
               <label className="text-sm font-medium text-graphite-700">Municipio</label>
               <input
                 value={locationData?.places?.[0]?.['place name'] ?? ''}
-                readOnly
-                placeholder="--"
-                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-100 px-4 py-3 text-sm text-graphite-600"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-graphite-700">Tipo</label>
-              <input
-                value={locationData?.places?.[0]?.tipo ?? ''}
                 readOnly
                 placeholder="--"
                 className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-100 px-4 py-3 text-sm text-graphite-600"
