@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import codigosPostales from './lista-de-cp-2.json'
 
 function App() {
   const apiBaseUrl = import.meta.env.VITE_API_URL || ''
@@ -98,25 +99,26 @@ function App() {
     const fetchPostal = async () => {
       setCpStatus('loading')
       try {
-        const response = await fetch(`https://api.tau.com.mx/dipomex/v1/codigo_postal/${postalCode}`)
-        if (!response.ok) throw new Error('CP no encontrado')
-        const data = await response.json()
+        // Buscar en JSON local
+        const cpNumber = parseInt(postalCode, 10)
+        const results = codigosPostales.filter(item => item['codigo-postal'] === cpNumber)
         
         if (!isActive) return
         
         // Validar respuesta
-        if (!data.codigo_postal || data.codigo_postal.length === 0) {
+        if (results.length === 0) {
           throw new Error('CP no encontrado')
         }
         
-        const firstResult = data.codigo_postal[0]
+        const firstResult = results[0]
         // Obtener colonias únicas
-        const colonias = [...new Set(data.codigo_postal.map(item => item.asentamiento))]
+        const colonias = [...new Set(results.map(item => item.colonia))]
         
         const mappedData = {
           places: [{
-            state: firstResult.estado || '',
-            'place name': firstResult.municipio || ''
+            state: firstResult.Estado || '',
+            'place name': firstResult.Municipio || '',
+            tipo: firstResult.tipo || ''
           }],
           _colonias: colonias
         }
@@ -381,9 +383,9 @@ function App() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-graphite-700">Estado</label>
+              <label className="text-sm font-medium text-graphite-700">Municipio</label>
               <input
-                value={locationData?.places?.[0]?.state ?? ''}
+                value={locationData?.places?.[0]?.['place name'] ?? ''}
                 readOnly
                 placeholder="--"
                 className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-100 px-4 py-3 text-sm text-graphite-600"
@@ -391,9 +393,9 @@ function App() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-graphite-700">Municipio / Ciudad</label>
+              <label className="text-sm font-medium text-graphite-700">Tipo</label>
               <input
-                value={locationData?.places?.[0]?.['place name'] ?? ''}
+                value={locationData?.places?.[0]?.tipo ?? ''}
                 readOnly
                 placeholder="--"
                 className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-100 px-4 py-3 text-sm text-graphite-600"
