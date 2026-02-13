@@ -150,8 +150,8 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-graphite-50 px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-5xl flex-col gap-6 sm:gap-8">
+    <div className="min-h-screen bg-graphite-50 px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mx-auto flex max-w-5xl flex-col gap-5 sm:gap-8">
         <header className="rounded-2xl border border-[#E9C4D1] bg-white p-5 shadow-card sm:p-6">
           <span className="text-sm font-semibold uppercase tracking-[0.2em]">
             Mercado Solidario

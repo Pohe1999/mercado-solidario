@@ -14,4 +14,17 @@ body {
   min-height: 100vh;
   background: #f7f7f8;
   color: #171a1f;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px !important;
 }
