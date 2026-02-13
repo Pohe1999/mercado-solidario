@@ -316,6 +316,7 @@ function App() {
                     setValue('postalCode', nextValue, { shouldValidate: true })
                   },
                 })}
+                inputMode="numeric"
                 placeholder="00000"
                 className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
               />
@@ -393,6 +394,7 @@ function App() {
             <div>
               <label className="text-sm font-medium text-graphite-700">Teléfono</label>
               <input
+                type="tel"
                 {...register('phone', {
                   required: 'El teléfono es obligatorio',
                   validate: (value) =>
