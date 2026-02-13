@@ -36,8 +36,17 @@ function App() {
   const isPostalValid = postalCode.length === 5 && cpStatus === 'success'
   const phoneValue = watch('phone')
   const addressValue = watch('address')
+  const nombreValue = watch('nombre')
+  const apellidoPaternoValue = watch('apellidoPaterno')
+  const apellidoMaternoValue = watch('apellidoMaterno')
+  const coloniaValue = watch('colonia')
+  
   const isPhoneValid = phoneValue?.replace(/\D/g, '').length === 10
   const isAddressValid = addressValue?.trim().length >= 8
+  const isNombreValid = nombreValue?.trim().length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(nombreValue)
+  const isApellidoPaternoValid = apellidoPaternoValue?.trim().length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(apellidoPaternoValue)
+  const isApellidoMaternoValid = apellidoMaternoValue?.trim().length >= 2 && /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/.test(apellidoMaternoValue)
+  const isColoniaValid = coloniaValue?.trim().length > 0
 
   const colonies = useMemo(() => {
     if (!locationData) return []
@@ -282,7 +291,7 @@ function App() {
                 </div>
               </div>
               <p className="mt-2 text-xs text-graphite-500">
-                Listado desde la colección de registros.
+                Escribe el nombre del SM que entrega.
               </p>
               {(selectedSm?.sector || selectedSm?.seccion) && (
                 <div className="mt-2 rounded-lg border border-[#E9C4D1] bg-[#FFF5F7] px-3 py-2 text-xs text-graphite-700">
@@ -340,25 +349,34 @@ function App() {
           <div className="mt-4 grid gap-3 sm:gap-4 md:grid-cols-3">
             <div>
               <label className="text-xs font-medium text-graphite-700 sm:text-sm">Nombre(s)</label>
-              <input
-                {...register('nombre', {
-                  required: 'Requerido',
-                  pattern: {
-                    value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
-                    message: 'Solo letras',
-                  },
-                  minLength: {
-                    value: 2,
-                    message: 'Mínimo 2 caracteres',
-                  },
-                  onChange: (e) => {
-                    const trimmed = e.target.value.replace(/\s+$/, '')
-                    setValue('nombre', trimmed)
-                  },
-                })}
-                placeholder="Nombre(s)"
-                className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
-              />
+              <div className="relative">
+                <input
+                  {...register('nombre', {
+                    required: 'Requerido',
+                    pattern: {
+                      value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
+                      message: 'Solo letras',
+                    },
+                    minLength: {
+                      value: 2,
+                      message: 'Mínimo 2 caracteres',
+                    },
+                    onChange: (e) => {
+                      const trimmed = e.target.value.replace(/\s+$/, '')
+                      setValue('nombre', trimmed)
+                    },
+                  })}
+                  placeholder="Nombre(s)"
+                  className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 pr-8 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                />
+                <div className="pointer-events-none absolute right-2.5 top-1/2 mt-0.75 h-2 w-2 -translate-y-1/2 rounded-full">
+                  <span
+                    className={`block h-2 w-2 rounded-full transition-colors ${
+                      isNombreValid ? 'bg-emerald-500' : 'bg-graphite-300'
+                    }`}
+                  />
+                </div>
+              </div>
               {errors.nombre && (
                 <p className="mt-0.5 text-xs font-medium text-[#B42318]">
                   {errors.nombre.message}
@@ -368,25 +386,34 @@ function App() {
 
             <div>
               <label className="text-xs font-medium text-graphite-700 sm:text-sm">Apellido Paterno</label>
-              <input
-                {...register('apellidoPaterno', {
-                  required: 'Requerido',
-                  pattern: {
-                    value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
-                    message: 'Solo letras',
-                  },
-                  minLength: {
-                    value: 2,
-                    message: 'Mínimo 2 caracteres',
-                  },
-                  onChange: (e) => {
-                    const trimmed = e.target.value.replace(/\s+$/, '')
-                    setValue('apellidoPaterno', trimmed)
-                  },
-                })}
-                placeholder="Apellido Paterno"
-                className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
-              />
+              <div className="relative">
+                <input
+                  {...register('apellidoPaterno', {
+                    required: 'Requerido',
+                    pattern: {
+                      value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
+                      message: 'Solo letras',
+                    },
+                    minLength: {
+                      value: 2,
+                      message: 'Mínimo 2 caracteres',
+                    },
+                    onChange: (e) => {
+                      const trimmed = e.target.value.replace(/\s+$/, '')
+                      setValue('apellidoPaterno', trimmed)
+                    },
+                  })}
+                  placeholder="Apellido Paterno"
+                  className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 pr-8 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                />
+                <div className="pointer-events-none absolute right-2.5 top-1/2 mt-0.75 h-2 w-2 -translate-y-1/2 rounded-full">
+                  <span
+                    className={`block h-2 w-2 rounded-full transition-colors ${
+                      isApellidoPaternoValid ? 'bg-emerald-500' : 'bg-graphite-300'
+                    }`}
+                  />
+                </div>
+              </div>
               {errors.apellidoPaterno && (
                 <p className="mt-0.5 text-xs font-medium text-[#B42318]">
                   {errors.apellidoPaterno.message}
@@ -396,25 +423,34 @@ function App() {
 
             <div>
               <label className="text-xs font-medium text-graphite-700 sm:text-sm">Apellido Materno</label>
-              <input
-                {...register('apellidoMaterno', {
-                  required: 'Requerido',
-                  pattern: {
-                    value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
-                    message: 'Solo letras',
-                  },
-                  minLength: {
-                    value: 2,
-                    message: 'Mínimo 2 caracteres',
-                  },
-                  onChange: (e) => {
-                    const trimmed = e.target.value.replace(/\s+$/, '')
-                    setValue('apellidoMaterno', trimmed)
-                  },
-                })}
-                placeholder="Apellido Materno"
-                className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
-              />
+              <div className="relative">
+                <input
+                  {...register('apellidoMaterno', {
+                    required: 'Requerido',
+                    pattern: {
+                      value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
+                      message: 'Solo letras',
+                    },
+                    minLength: {
+                      value: 2,
+                      message: 'Mínimo 2 caracteres',
+                    },
+                    onChange: (e) => {
+                      const trimmed = e.target.value.replace(/\s+$/, '')
+                      setValue('apellidoMaterno', trimmed)
+                    },
+                  })}
+                  placeholder="Apellido Materno"
+                  className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 pr-8 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                />
+                <div className="pointer-events-none absolute right-2.5 top-1/2 mt-0.75 h-2 w-2 -translate-y-1/2 rounded-full">
+                  <span
+                    className={`block h-2 w-2 rounded-full transition-colors ${
+                      isApellidoMaternoValid ? 'bg-emerald-500' : 'bg-graphite-300'
+                    }`}
+                  />
+                </div>
+              </div>
               {errors.apellidoMaterno && (
                 <p className="mt-0.5 text-xs font-medium text-[#B42318]">
                   {errors.apellidoMaterno.message}
@@ -462,21 +498,30 @@ function App() {
 
             <div>
               <label className="text-sm font-medium text-graphite-700">Colonia</label>
-              <select
-                value={colonia}
-                {...register('colonia', {
-                  required: 'La colonia es obligatoria',
-                  onChange: (event) => setColonia(event.target.value),
-                })}
-                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
-              >
-                <option value="">Selecciona una colonia</option>
-                {colonies.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  value={colonia}
+                  {...register('colonia', {
+                    required: 'La colonia es obligatoria',
+                    onChange: (event) => setColonia(event.target.value),
+                  })}
+                  className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 pr-10 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                >
+                  <option value="">Selecciona una colonia</option>
+                  {colonies.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute right-9 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full">
+                  <span
+                    className={`block h-2 w-2 rounded-full transition-colors ${
+                      isColoniaValid ? 'bg-emerald-500' : 'bg-graphite-300'
+                    }`}
+                  />
+                </div>
+              </div>
               {errors.colonia && (
                 <p className="mt-1 text-xs font-medium text-[#B42318]">
                   {errors.colonia.message}
@@ -486,17 +531,26 @@ function App() {
 
             <div className="md:col-span-2">
               <label className="text-sm font-medium text-graphite-700">Dirección</label>
-              <input
-                {...register('address', {
-                  required: 'La dirección es obligatoria',
-                  minLength: {
-                    value: 8,
-                    message: 'Agrega más detalles',
-                  },
-                })}
-                placeholder="Calle, número, referencias"
-                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
-              />
+              <div className="relative">
+                <input
+                  {...register('address', {
+                    required: 'La dirección es obligatoria',
+                    minLength: {
+                      value: 8,
+                      message: 'Agrega más detalles',
+                    },
+                  })}
+                  placeholder="Calle, número, referencias"
+                  className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 pr-10 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                />
+                <div className="pointer-events-none absolute right-3 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full">
+                  <span
+                    className={`block h-2 w-2 rounded-full transition-colors ${
+                      isAddressValid ? 'bg-emerald-500' : 'bg-graphite-300'
+                    }`}
+                  />
+                </div>
+              </div>
               {errors.address && (
                 <p className="mt-1 text-xs font-medium text-[#B42318]">
                   {errors.address.message}
@@ -506,20 +560,29 @@ function App() {
 
             <div>
               <label className="text-sm font-medium text-graphite-700">Teléfono</label>
-              <input
-                type="tel"
-                {...register('phone', {
-                  required: 'El teléfono es obligatorio',
-                  validate: (value) =>
-                    value.replace(/\D/g, '').length === 10 || 'Deben ser 10 dígitos',
-                  onChange: (event) => {
-                    const nextValue = event.target.value.replace(/\D/g, '').slice(0, 10)
-                    setValue('phone', nextValue, { shouldValidate: true })
-                  },
-                })}
-                placeholder="55 6778 2377"
-                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
-              />
+              <div className="relative">
+                <input
+                  type="tel"
+                  {...register('phone', {
+                    required: 'El teléfono es obligatorio',
+                    validate: (value) =>
+                      value.replace(/\D/g, '').length === 10 || 'Deben ser 10 dígitos',
+                    onChange: (event) => {
+                      const nextValue = event.target.value.replace(/\D/g, '').slice(0, 10)
+                      setValue('phone', nextValue, { shouldValidate: true })
+                    },
+                  })}
+                  placeholder="55 6778 2377"
+                  className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 pr-10 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                />
+                <div className="pointer-events-none absolute right-3 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full">
+                  <span
+                    className={`block h-2 w-2 rounded-full transition-colors ${
+                      isPhoneValid ? 'bg-emerald-500' : 'bg-graphite-300'
+                    }`}
+                  />
+                </div>
+              </div>
               {errors.phone && (
                 <p className="mt-1 text-xs font-medium text-[#B42318]">{errors.phone.message}</p>
               )}
