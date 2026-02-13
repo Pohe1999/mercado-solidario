@@ -148,14 +148,17 @@ function App() {
 
   const onSubmit = async (formData) => {
     try {
+      const nombre = formData.nombre.trim().toUpperCase()
+      const apellidoPaterno = formData.apellidoPaterno.trim().toUpperCase()
+      const apellidoMaterno = formData.apellidoMaterno.trim().toUpperCase()
+      const nombreCompleto = `${nombre} ${apellidoPaterno} ${apellidoMaterno}`
+      
       const payload = {
         smName: formData.smName,
         smSector: String(selectedSm?.sector ?? ''),
         smSeccion: String(selectedSm?.seccion ?? ''),
         smFraccion: String(selectedSm?.fraccion ?? ''),
-        nombre: formData.nombre.trim().toUpperCase(),
-        apellidoPaterno: formData.apellidoPaterno.trim().toUpperCase(),
-        apellidoMaterno: formData.apellidoMaterno.trim().toUpperCase(),
+        nombreCompleto,
         postalCode: formData.postalCode,
         municipio: locationData?.places?.[0]?.['place name'] ?? '',
         colonia: formData.colonia,
@@ -334,79 +337,93 @@ function App() {
             <span className="text-xs font-medium">Campos obligatorios</span>
           </div>
 
-          <div className="mt-5 grid gap-4 sm:gap-5 md:grid-cols-2">
+          <div className="mt-4 grid gap-3 sm:gap-4 md:grid-cols-3">
             <div>
-              <label className="text-sm font-medium text-graphite-700">Nombre(s)</label>
+              <label className="text-xs font-medium text-graphite-700 sm:text-sm">Nombre(s)</label>
               <input
                 {...register('nombre', {
-                  required: 'El nombre es obligatorio',
+                  required: 'Requerido',
                   pattern: {
                     value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
-                    message: 'Solo se permiten letras',
+                    message: 'Solo letras',
                   },
                   minLength: {
                     value: 2,
-                    message: 'Ingresa al menos 2 caracteres',
+                    message: 'Mínimo 2 caracteres',
+                  },
+                  onChange: (e) => {
+                    const trimmed = e.target.value.replace(/\s+$/, '')
+                    setValue('nombre', trimmed)
                   },
                 })}
                 placeholder="Nombre(s)"
-                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
               />
               {errors.nombre && (
-                <p className="mt-1 text-xs font-medium text-[#B42318]">
+                <p className="mt-0.5 text-xs font-medium text-[#B42318]">
                   {errors.nombre.message}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="text-sm font-medium text-graphite-700">Apellido Paterno</label>
+              <label className="text-xs font-medium text-graphite-700 sm:text-sm">Apellido Paterno</label>
               <input
                 {...register('apellidoPaterno', {
-                  required: 'El apellido paterno es obligatorio',
+                  required: 'Requerido',
                   pattern: {
                     value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
-                    message: 'Solo se permiten letras',
+                    message: 'Solo letras',
                   },
                   minLength: {
                     value: 2,
-                    message: 'Ingresa al menos 2 caracteres',
+                    message: 'Mínimo 2 caracteres',
+                  },
+                  onChange: (e) => {
+                    const trimmed = e.target.value.replace(/\s+$/, '')
+                    setValue('apellidoPaterno', trimmed)
                   },
                 })}
                 placeholder="Apellido Paterno"
-                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
               />
               {errors.apellidoPaterno && (
-                <p className="mt-1 text-xs font-medium text-[#B42318]">
+                <p className="mt-0.5 text-xs font-medium text-[#B42318]">
                   {errors.apellidoPaterno.message}
                 </p>
               )}
             </div>
 
-            <div className="md:col-span-2">
-              <label className="text-sm font-medium text-graphite-700">Apellido Materno</label>
+            <div>
+              <label className="text-xs font-medium text-graphite-700 sm:text-sm">Apellido Materno</label>
               <input
                 {...register('apellidoMaterno', {
-                  required: 'El apellido materno es obligatorio',
+                  required: 'Requerido',
                   pattern: {
                     value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/,
-                    message: 'Solo se permiten letras',
+                    message: 'Solo letras',
                   },
                   minLength: {
                     value: 2,
-                    message: 'Ingresa al menos 2 caracteres',
+                    message: 'Mínimo 2 caracteres',
+                  },
+                  onChange: (e) => {
+                    const trimmed = e.target.value.replace(/\s+$/, '')
+                    setValue('apellidoMaterno', trimmed)
                   },
                 })}
                 placeholder="Apellido Materno"
-                className="mt-2 w-full rounded-xl border border-graphite-200 bg-graphite-50 px-4 py-3 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
+                className="mt-1.5 w-full rounded-lg border border-graphite-200 bg-graphite-50 px-3 py-2 text-sm text-graphite-800 outline-none transition focus:border-[#8B1538] focus:ring-2 focus:ring-[#E9C4D1]"
               />
               {errors.apellidoMaterno && (
-                <p className="mt-1 text-xs font-medium text-[#B42318]">
+                <p className="mt-0.5 text-xs font-medium text-[#B42318]">
                   {errors.apellidoMaterno.message}
                 </p>
               )}
             </div>
+          </div>
 
+          <div className="mt-4 grid gap-3 sm:gap-4 md:grid-cols-2">
             <div>
               <label className="text-sm font-medium text-graphite-700">Código postal</label>
               <input
