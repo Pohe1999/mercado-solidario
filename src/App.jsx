@@ -308,7 +308,7 @@ function App() {
             </div>
           </section>
 
-          <aside className="order-2 rounded-2xl border border-[#E9C4D1] bg-white/80 p-4 sm:p-5 lg:order-none">
+          <aside className="order-2 rounded-2xl border border-[#E9C4D1] bg-white/80 p-4 sm:p-5 lg:order-1">
             <ul className="flex flex-col gap-2 text-xs text-graphite-700">
               <li className="flex items-center gap-2">
                 <span
