@@ -362,8 +362,12 @@ function App() {
                       message: 'Mínimo 2 caracteres',
                     },
                     onChange: (e) => {
-                      const trimmed = e.target.value.replace(/\s+$/, '')
-                      setValue('nombre', trimmed)
+                      const upper = e.target.value.toUpperCase()
+                      setValue('nombre', upper)
+                    },
+                    onBlur: (e) => {
+                      const trimmed = e.target.value.trim().toUpperCase()
+                      setValue('nombre', trimmed, { shouldValidate: true })
                     },
                   })}
                   placeholder="Nombre(s)"
@@ -399,8 +403,12 @@ function App() {
                       message: 'Mínimo 2 caracteres',
                     },
                     onChange: (e) => {
-                      const trimmed = e.target.value.replace(/\s+$/, '')
-                      setValue('apellidoPaterno', trimmed)
+                      const upper = e.target.value.toUpperCase()
+                      setValue('apellidoPaterno', upper)
+                    },
+                    onBlur: (e) => {
+                      const trimmed = e.target.value.trim().toUpperCase()
+                      setValue('apellidoPaterno', trimmed, { shouldValidate: true })
                     },
                   })}
                   placeholder="Apellido Paterno"
@@ -436,8 +444,12 @@ function App() {
                       message: 'Mínimo 2 caracteres',
                     },
                     onChange: (e) => {
-                      const trimmed = e.target.value.replace(/\s+$/, '')
-                      setValue('apellidoMaterno', trimmed)
+                      const upper = e.target.value.toUpperCase()
+                      setValue('apellidoMaterno', upper)
+                    },
+                    onBlur: (e) => {
+                      const trimmed = e.target.value.trim().toUpperCase()
+                      setValue('apellidoMaterno', trimmed, { shouldValidate: true })
                     },
                   })}
                   placeholder="Apellido Materno"
