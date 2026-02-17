@@ -845,5 +845,12 @@
    "Municipio": "Tecámac",
    "Estado": "Estado de México",
    "tipo": "Urbano"
+ },
+  {
+   "codigo-postal": 55765,
+   "colonia": "Ampliación Esmeralda",
+   "Municipio": "Tecámac",
+   "Estado": "Estado de México",
+   "tipo": "Urbano"
  }
 ]
